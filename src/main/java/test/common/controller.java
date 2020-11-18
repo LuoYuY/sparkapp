@@ -3,22 +3,14 @@ package test.common;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mongodb.Cursor;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.util.JSON;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import javax.management.Query;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 
@@ -30,8 +22,9 @@ import static com.mongodb.client.model.Filters.eq;
 
 @RestController
 @RequestMapping("/getList")
-public class controller<MongoTemplate> {
-    //    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+public class controller {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 //    @Resource
 //    private MongoTemplate mongoTemplate;
     MongoClient mongoClient = new MongoClient("115.29.208.141", 27017);
@@ -42,6 +35,28 @@ public class controller<MongoTemplate> {
     @PostMapping(value = "/stream")
     public ServerResponse stream(HttpServletResponse response) throws UnsupportedEncodingException {
         return ServerResponse.createBySuccess();
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/startStreaming")
+    public ServerResponse startStreaming(HttpServletResponse response) throws UnsupportedEncodingException {
+        String result = " ";
+        //文件存放路径
+        String path = "/home/hadoop/hadoop/tempShell.sh";
+        //执行的脚本，一个字符串就是一行。
+        //启动HDFS
+//        String[] strs1 = { "cd /home/hadoop/hadoop/spark-2.4.3-bin-hadoop2.7","./sbin/start-dfs.sh"};
+        String[] strs = { "cd /home/hadoop/hadoop/spark-2.4.3-bin-hadoop2.7"
+                ,"./bin/spark-submit --deploy-mode cluster --class org.apache.spark.examples.SparkPi --name submit --master spark://hadoopmaster:7077 examples/jars/spark-examples_2.11-2.4.3.jar 100"};
+        try {
+            SubmitUtil.createShell(path, strs);
+            result = SubmitUtil.runShell(path);
+            System.out.println(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ServerResponse.createBySuccess("submit success",result);
     }
 
     @ResponseBody
