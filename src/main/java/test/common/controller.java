@@ -1,6 +1,7 @@
 package test.common;
 
 
+import ch.ethz.ssh2.Connection;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.MongoClient;
@@ -41,21 +42,26 @@ public class controller {
     @PostMapping(value = "/startStreaming")
     public ServerResponse startStreaming(HttpServletResponse response) throws UnsupportedEncodingException {
         String result = " ";
-        //文件存放路径
-        String path = "/home/hadoop/hadoop/tempShell.sh";
-        //执行的脚本，一个字符串就是一行。
-        //启动HDFS
-//        String[] strs1 = { "cd /home/hadoop/hadoop/spark-2.4.3-bin-hadoop2.7","./sbin/start-dfs.sh"};
-        String[] strs = { "cd /home/hadoop/hadoop/spark-2.4.3-bin-hadoop2.7"
-                ,"./bin/spark-submit --deploy-mode cluster --class org.apache.spark.examples.SparkPi --name submit --master spark://hadoopmaster:7077 examples/jars/spark-examples_2.11-2.4.3.jar 100"};
-        try {
-            SubmitUtil.createShell(path, strs);
-            result = SubmitUtil.runShell(path);
-            System.out.println(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        //文件存放路径
+//        String path = "/home/hadoop/hadoop/tempShell.sh";
+//        //执行的脚本，一个字符串就是一行。
+//        //启动HDFS
+////        String[] strs1 = { "cd /home/hadoop/hadoop/spark-2.4.3-bin-hadoop2.7","./sbin/start-dfs.sh"};
+//        String[] strs = { "ssh hadoop@hadoopslave1"
+//                ,"cd /home/hadoop/hadoop/spark-2.4.3-bin-hadoop2.7"
+//                ,"./bin/spark-submit --deploy-mode cluster --class org.apache.spark.examples.SparkPi --name submit --master spark://hadoopmaster:7077 examples/jars/spark-examples_2.11-2.4.3.jar 100"
+//                ,"exit"
+//        };
+//        try {
+//            SubmitUtil.createShell(path, strs);
+//            result = SubmitUtil.runShell(path);
+//            System.out.println(result);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
+        Connection c = SshLinux.login("hadoopslave3","hadoop","lyy19971221");
+        result=SshLinux.execute(c);
         return ServerResponse.createBySuccess("submit success",result);
     }
 
