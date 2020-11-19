@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 
-import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Sorts.descending;
 
 /**
  * Created by lyy on 2020/9/8 下午8:40
@@ -28,9 +29,9 @@ public class controller {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 //    @Resource
 //    private MongoTemplate mongoTemplate;
-    MongoClient mongoClient = new MongoClient("115.29.208.141", 27017);
+    MongoClient mongoClient = new MongoClient("172.19.241.132", 27017);
     //连接数据库
-    MongoDatabase mDatabase = mongoClient.getDatabase("testDB");
+    MongoDatabase mDatabase = mongoClient.getDatabase("streaming");
 
     @ResponseBody
     @PostMapping(value = "/stream")
@@ -71,7 +72,7 @@ public class controller {
 
         System.out.println("Connect to database successfully!");
         System.out.println("MongoDatabase inof is : " + mDatabase.getName());
-        MongoCollection collection = mDatabase.getCollection("user");
+        MongoCollection collection = mDatabase.getCollection("hometeam");
 //
 //        Document d = new Document("name","lyy");
 //        Document document = new Document("title", "MongoDB Insert Demo")
@@ -80,7 +81,10 @@ public class controller {
 ////                .append("by", d)
 //                .append("url", "http://c.biancheng.net/mongodb/");
 //        collection.insertOne(document);
-        MongoCursor<Document> cursor = collection.find(eq("likes", 30)).iterator();
+//        172.19.241.132
+//        List<Document> list = collection.find().sort(descending("number")).into(new ArrayList<Document>());
+
+        MongoCursor<Document> cursor = collection.find().sort(descending("number")).limit(10).iterator();
         JSONArray re = new JSONArray();
         try {
             while (cursor.hasNext()) {
