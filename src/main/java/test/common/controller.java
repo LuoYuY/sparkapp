@@ -4,16 +4,24 @@ package test.common;
 import ch.ethz.ssh2.Connection;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.descending;
@@ -27,7 +35,7 @@ import static com.mongodb.client.model.Sorts.descending;
 public class controller {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-//    @Resource
+    //    @Resource
 //    private MongoTemplate mongoTemplate;
     MongoClient mongoClient = new MongoClient("172.19.241.132", 27017);
     //连接数据库
@@ -61,9 +69,9 @@ public class controller {
 //            e.printStackTrace();
 //        }
 
-        Connection c = SshLinux.login("hadoopslave3","hadoop","lyy19971221");
-        result=SshLinux.execute(c);
-        return ServerResponse.createBySuccess("submit success",result);
+        Connection c = SshLinux.login("hadoopslave3", "hadoop", "lyy19971221");
+        result = SshLinux.execute(c);
+        return ServerResponse.createBySuccess("submit success", result);
     }
 
     @ResponseBody
@@ -72,7 +80,6 @@ public class controller {
 
         System.out.println("Connect to database successfully!");
         System.out.println("MongoDatabase inof is : " + mDatabase.getName());
-        MongoCollection collection = mDatabase.getCollection("hometeam");
 //
 //        Document d = new Document("name","lyy");
 //        Document document = new Document("title", "MongoDB Insert Demo")
@@ -84,16 +91,48 @@ public class controller {
 //        172.19.241.132
 //        List<Document> list = collection.find().sort(descending("number")).into(new ArrayList<Document>());
 
+        //获取球迷数量多的队伍
+        MongoCollection collection = mDatabase.getCollection("hometeam");
         MongoCursor<Document> cursor = collection.find().sort(descending("number")).limit(10).iterator();
-        JSONArray re = new JSONArray();
+        JSONArray teamArray = new JSONArray();
         try {
             while (cursor.hasNext()) {
                 JSONObject jsonObject = JSONObject.parseObject(cursor.next().toJson());
-                re.add(jsonObject);
+                teamArray.add(jsonObject);
             }
         } finally {
             cursor.close();
         }
+
+        //获取用户地区分布
+        JSONArray regionArray = new JSONArray();
+        MongoCollection regionCollection = mDatabase.getCollection("region");
+        String[] regionList = {"北京", "天津", "上海", "重庆", "河北", "河南", "云南", "辽宁", "黑龙江", "湖南",
+                "安徽", "山东", "新疆", "江苏","浙江", "江西", "湖北", "广西", "甘肃", "山西", "内蒙古", "陕西", "吉林", "福建", "贵州", "广东", "青海", "西藏", "四川", "宁夏", "海南", "台湾", "香港", "澳门", "南海诸岛"
+        };
+
+        for(int i=0;i<regionList.length;i++) {
+            JSONObject obj = new JSONObject();
+//            System.out.println("/"+regionList[i]+"/");
+//            Bson filter = Filters.regex("region","^.*"+regionList[i]+".*^");
+//            Pattern.compile("^.*王.*$", Pattern.CASE_INSENSITIVE)
+            Pattern pattern = Pattern.compile("^.*"+regionList[i]+".*$",Pattern.CASE_INSENSITIVE);
+            BasicDBObject query = new BasicDBObject();
+            query.put("region",pattern);
+            MongoCursor cur = regionCollection.find(query).iterator();
+            Integer count =0 ;
+            while(cur.hasNext()){
+                cur.next();
+                count++;
+            }
+            obj.put("name",regionList[i]);
+            obj.put("value",count.toString());
+            regionArray.add(obj);
+        }
+
+        JSONObject re = new JSONObject();
+        re.put("teamArray",teamArray);
+        re.put("regionArray",regionArray);
         return ServerResponse.createBySuccess("fetch success", re);
     }
 
