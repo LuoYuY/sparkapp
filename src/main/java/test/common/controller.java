@@ -5,25 +5,18 @@ import ch.ethz.ssh2.Connection;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.regex.Pattern;
-
-import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.descending;
 
 /**
@@ -80,16 +73,6 @@ public class controller {
 
         System.out.println("Connect to database successfully!");
         System.out.println("MongoDatabase inof is : " + mDatabase.getName());
-//
-//        Document d = new Document("name","lyy");
-//        Document document = new Document("title", "MongoDB Insert Demo")
-//                .append("description","database")
-//                .append("likes", 30)
-////                .append("by", d)
-//                .append("url", "http://c.biancheng.net/mongodb/");
-//        collection.insertOne(document);
-//        172.19.241.132
-//        List<Document> list = collection.find().sort(descending("number")).into(new ArrayList<Document>());
 
         //获取球迷数量多的队伍
         MongoCollection collection = mDatabase.getCollection("hometeam");
@@ -104,6 +87,19 @@ public class controller {
             cursor.close();
         }
 
+        //获取性别比
+        MongoCollection genderCollection = mDatabase.getCollection("gender");
+        MongoCursor<Document> genderCr = genderCollection.find().iterator();
+        JSONArray genderArray = new JSONArray();
+        try {
+            while (genderCr.hasNext()) {
+                JSONObject jsonObject = JSONObject.parseObject(genderCr.next().toJson());
+                genderArray.add(jsonObject);
+            }
+        } finally {
+            genderCr.close();
+        }
+
         //获取用户地区分布
         JSONArray regionArray = new JSONArray();
         MongoCollection regionCollection = mDatabase.getCollection("region");
@@ -113,26 +109,42 @@ public class controller {
 
         for(int i=0;i<regionList.length;i++) {
             JSONObject obj = new JSONObject();
-//            System.out.println("/"+regionList[i]+"/");
-//            Bson filter = Filters.regex("region","^.*"+regionList[i]+".*^");
-//            Pattern.compile("^.*王.*$", Pattern.CASE_INSENSITIVE)
             Pattern pattern = Pattern.compile("^.*"+regionList[i]+".*$",Pattern.CASE_INSENSITIVE);
             BasicDBObject query = new BasicDBObject();
             query.put("region",pattern);
             MongoCursor cur = regionCollection.find(query).iterator();
             Integer count =0 ;
-            while(cur.hasNext()){
-                cur.next();
-                count++;
+            try {
+                while (cur.hasNext()) {
+                    cur.next();
+                    count++;
+                }
+                obj.put("name", regionList[i]);
+                obj.put("value", count.toString());
+                regionArray.add(obj);
+            }finally {
+                cur.close();
             }
-            obj.put("name",regionList[i]);
-            obj.put("value",count.toString());
-            regionArray.add(obj);
+        }
+
+        //获取词云
+        JSONArray wordArray = new JSONArray();
+        MongoCollection wordCollection = mDatabase.getCollection("word");
+        MongoCursor<Document> wordCursor = wordCollection.find().sort(descending("number")).limit(50).iterator();
+        try {
+            while (wordCursor.hasNext()) {
+                JSONObject jsonObject = JSONObject.parseObject(wordCursor.next().toJson());
+                wordArray.add(jsonObject);
+            }
+        } finally {
+            wordCursor.close();
         }
 
         JSONObject re = new JSONObject();
         re.put("teamArray",teamArray);
         re.put("regionArray",regionArray);
+        re.put("genderArray",genderArray);
+        re.put("wordArray",wordArray);
         return ServerResponse.createBySuccess("fetch success", re);
     }
 
