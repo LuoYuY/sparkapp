@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="22ac7512-2598-4154-82c8-8f7bdf365c33" name="Default Changelist" comment="add show map">
+    <list default="true" id="22ac7512-2598-4154-82c8-8f7bdf365c33" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/端口" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/test/common/controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/common/controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/test/common/controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/test/common/controller.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +92,7 @@
       <updated>1605688474955</updated>
       <workItem from="1605688480648" duration="18620000" />
       <workItem from="1605752728379" duration="12650000" />
-      <workItem from="1605795725282" duration="4147000" />
+      <workItem from="1605795725282" duration="4479000" />
     </task>
     <task id="LOCAL-00001" summary="add ShellUtil">
       <created>1605715533276</created>
@@ -123,7 +122,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605766098756</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add 分词词云">
+      <created>1605844152297</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1605844152297</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -134,17 +140,22 @@
     <MESSAGE value="add sshUtil" />
     <MESSAGE value="add show hometeam chart" />
     <MESSAGE value="add show map" />
-    <option name="LAST_COMMIT_MESSAGE" value="add show map" />
+    <MESSAGE value="add 分词词云" />
+    <option name="LAST_COMMIT_MESSAGE" value="add 分词词云" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="708" y="357" width="560" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605844187608">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="708" y="357" width="560" height="390" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1605844187608" />
     <state x="726" y="301" width="524" height="502" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1605712024525">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="726" y="301" width="524" height="502" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1605712024525" />
-    <state x="508" y="126" width="960" height="852" key="CommitChangelistDialog2" timestamp="1605795884920">
+    <state x="508" y="126" width="960" height="852" key="CommitChangelistDialog2" timestamp="1605844152045">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="508" y="126" width="960" height="852" key="CommitChangelistDialog2/67.27.1853.1053@67.27.1853.1053" timestamp="1605795884920" />
+    <state x="508" y="126" width="960" height="852" key="CommitChangelistDialog2/67.27.1853.1053@67.27.1853.1053" timestamp="1605844152045" />
     <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl" timestamp="1605688645073">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
@@ -185,17 +196,17 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="853" y="396" width="924" height="684" key="Maven.ArtifactSearchDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1605754297554" />
-    <state x="588" y="288" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1605766113309">
+    <state x="588" y="288" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1605844163760">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="588" y="288" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.1853.1053@67.27.1853.1053" timestamp="1605766113309" />
+    <state x="588" y="288" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.1853.1053@67.27.1853.1053" timestamp="1605844163760" />
     <state x="644" y="336" key="com.intellij.ide.util.TipDialog" timestamp="1605795725223">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="644" y="336" key="com.intellij.ide.util.TipDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1605795725223" />
-    <state x="498" y="243" width="980" height="618" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1605799977467">
+    <state x="498" y="243" width="980" height="618" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1605844244629">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="498" y="243" width="980" height="618" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1605799977467" />
+    <state x="498" y="243" width="980" height="618" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1605844244629" />
   </component>
 </project>

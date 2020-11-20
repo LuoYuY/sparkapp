@@ -1,0 +1,71 @@
+//获取streaming数据
+http://172.19.241.194:8093/getList/getMap
+
+//请求携带参数
+无
+
+//返回数据
+{
+    "status": 0,
+    "msg": "fetch success",
+    "data": {
+        "regionArray": [
+            {
+                "name": "北京",
+                "value": "8"
+            },
+            {
+                "name": "天津",
+                "value": "9"
+            }
+        ],
+        "teamArray": [
+            {
+                "number": 209,
+                "_id": {
+                    "$oid": "5fb5d7bb4280fb946c93d88a"
+                },
+                "hometeam": "拜仁慕尼黑"
+            },
+            {
+                "number": 134,
+                "_id": {
+                    "$oid": "5fb5d7bb4280fb946c93d879"
+                },
+                "hometeam": "皇家马德里"
+            }
+        ],
+        "wordArray": [
+            {
+                "number": 98,
+                "_id": {
+                    "$oid": "5fb6723b4280fbd9dc0966e2"
+                },
+                "word": "的"
+            },
+            {
+                "number": 56,
+                "_id": {
+                    "$oid": "5fb6723b4280fbd9dc096789"
+                },
+                "word": "-"
+            }
+        ],
+        "genderArray": [
+            {
+                "number": 108,
+                "gender": null,
+                "_id": {
+                    "$oid": "5fb671204280fbd0d7f57627"
+                }
+            },
+            {
+                "number": 784,
+                "gender": "male",
+                "_id": {
+                    "$oid": "5fb671204280fbd0d7f57628"
+                }
+            }
+        ]
+    }
+}
